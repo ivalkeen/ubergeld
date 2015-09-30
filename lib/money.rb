@@ -53,4 +53,19 @@ class Money
   def *(other)
     Money.new(amount * other, currency)
   end
+
+  def ==(other)
+    other_in_current_currency = other.convert_to(currency)
+    amount.floor(2) == other_in_current_currency.amount.floor(2)
+  end
+
+  def >(other)
+    other_in_current_currency = other.convert_to(currency)
+    amount.floor(2) > other_in_current_currency.amount.floor(2)
+  end
+
+  def <(other)
+    other_in_current_currency = other.convert_to(currency)
+    amount.floor(2) < other_in_current_currency.amount.floor(2)
+  end
 end

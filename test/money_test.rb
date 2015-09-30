@@ -127,4 +127,68 @@ class MoneyTest < Minitest::Test
     result = money * 3.5
     assert_equal("140.00 USD", result.inspect)
   end
+
+  def test_equals
+    money1 = Money.new(50, "EUR")
+    money2 = Money.new(50, "EUR")
+    assert(money1 == money2)
+
+    money1 = Money.new(50.123, "EUR")
+    money2 = Money.new(50.122, "EUR")
+    assert(money1 == money2)
+
+    money1 = Money.new(42.34, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    assert(money1 == money2)
+  end
+
+  def test_not_equals
+    money1 = Money.new(50.12, "EUR")
+    money2 = Money.new(50.13, "EUR")
+    refute(money1 == money2)
+
+    money1 = Money.new(42.35, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    refute(money1 == money2)
+  end
+
+  def test_more
+    money1 = Money.new(50.12, "EUR")
+    money2 = Money.new(50.11, "EUR")
+    assert(money1 > money2)
+
+    money1 = Money.new(42.35, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    assert(money1 > money2)
+  end
+
+  def test_not_more
+    money1 = Money.new(50.123, "EUR")
+    money2 = Money.new(50.122, "EUR")
+    refute(money1 > money2)
+
+    money1 = Money.new(42.34, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    refute(money1 > money2)
+  end
+
+  def test_less
+    money1 = Money.new(50.11, "EUR")
+    money2 = Money.new(50.12, "EUR")
+    assert(money1 < money2)
+
+    money1 = Money.new(42.33, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    assert(money1 < money2)
+  end
+
+  def test_not_less
+    money1 = Money.new(50.122, "EUR")
+    money2 = Money.new(50.123, "EUR")
+    refute(money1 < money2)
+
+    money1 = Money.new(42.35, "Bitcoin")
+    money2 = Money.new(10_000, "USD")
+    refute(money1 < money2)
+  end
 end
