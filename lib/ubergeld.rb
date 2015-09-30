@@ -25,20 +25,27 @@ class Money
   end
 
   def convert_to(target_currency)
-    in_base_currency = nil
+    in_base_currency = convert_to_base
+    in_base_currency.convert_from_base(target_currency)
+  end
 
+  protected
+
+  def convert_to_base
     if currency == Money.base_currency
-      in_base_currency = amount
+      self
     else
-      to_base_rate = Money.rates[currency]
-      in_base_currency = amount / to_base_rate
+      rate = Money.rates[currency]
+      Money.new(amount / rate, Money.base_currency)
     end
+  end
 
-    if target_currency == Money.base_currency
-      Money.new(in_base_currency, Money.base_currency)
+  def convert_from_base(target_currency)
+    if currency == target_currency
+      self
     else
-      to_target_rate = Money.rates[target_currency]
-      Money.new(in_base_currency * to_target_rate, target_currency)
+      rate = Money.rates[target_currency]
+      Money.new(amount * rate, target_currency)
     end
   end
 end
