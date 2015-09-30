@@ -9,6 +9,10 @@ class MoneyTest < Minitest::Test
     )
   end
 
+  def test_that_it_has_a_version_number
+    refute_nil ::Money::VERSION
+  end
+
   def test_fails_if_no_conversion_rates
     Money.conversion_rates(nil)
 

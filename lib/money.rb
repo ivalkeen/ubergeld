@@ -1,12 +1,10 @@
-require "ubergeld/version"
-
 require "bigdecimal"
 require "bigdecimal/util"
 
-class Money
-  class InvalidCurrency < StandardError; end
-  class ConversionRatesNotSet < StandardError; end
+require "money/version"
+require "money/errors"
 
+class Money
   class << self
     def conversion_rates(base_currency, rates = {})
       @base_currency = base_currency.to_s
