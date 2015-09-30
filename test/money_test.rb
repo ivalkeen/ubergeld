@@ -54,4 +54,60 @@ class MoneyTest < Minitest::Test
     money_in_bitcoins = money_in_dollars.convert_to("Bitcoin")
     assert_equal("0.21 Bitcoin", money_in_bitcoins.inspect)
   end
+
+  def test_sum
+    money1 = Money.new(50, "USD")
+    money2 = Money.new(25, "USD")
+    result = money1 + money2
+    assert_equal("75.00 USD", result.inspect)
+
+    money1 = Money.new(50, "USD")
+    money2 = Money.new(50, "EUR")
+    result = money1 + money2
+    assert_equal("105.50 USD", result.inspect)
+  end
+
+  def test_diffirence
+    money1 = Money.new(50, "USD")
+    money2 = Money.new(25, "USD")
+    result = money1 - money2
+    assert_equal("25.00 USD", result.inspect)
+
+    money1 = Money.new(50, "EUR")
+    money2 = Money.new(50, "USD")
+    result = money1 - money2
+    assert_equal("4.95 EUR", result.inspect)
+  end
+
+  def test_division
+    money = Money.new(50, "EUR")
+    result = money / 2
+    assert_equal("25.00 EUR", result.inspect)
+
+    money = Money.new(40, "USD")
+    result = money / 4.5
+    assert_equal("8.89 USD", result.inspect)
+
+    money = Money.new(100, "USD")
+    result = money / 3
+    assert_equal("33.33 USD", result.inspect)
+  end
+
+  def test_division_by_zero_raises_error
+    money = Money.new(50, "EUR")
+
+    assert_raises(ZeroDivisionError) do
+      money / 0
+    end
+  end
+
+  def test_multiplication
+    money = Money.new(50, "EUR")
+    result = money * 2
+    assert_equal("100.00 EUR", result.inspect)
+
+    money = Money.new(40, "USD")
+    result = money * 3.5
+    assert_equal("140.00 USD", result.inspect)
+  end
 end

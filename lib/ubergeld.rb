@@ -29,6 +29,25 @@ class Money
     in_base_currency.convert_from_base(target_currency)
   end
 
+  def +(other)
+    other = other.convert_to(currency)
+    Money.new(amount + other.amount, currency)
+  end
+
+  def -(other)
+    other = other.convert_to(currency)
+    Money.new(amount - other.amount, currency)
+  end
+
+  def /(other)
+    fail ZeroDivisionError, "Division by zero is not supported" if other == 0
+    Money.new(amount / other, currency)
+  end
+
+  def *(other)
+    Money.new(amount * other, currency)
+  end
+
   protected
 
   def convert_to_base
