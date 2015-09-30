@@ -14,17 +14,11 @@ class MoneyTest < Minitest::Test
   end
 
   def test_fails_if_no_conversion_rates
-    Money.conversion_rates(nil)
-
-    assert_raises(Money::ConversionRatesNotSet) do
-      Money.new(1, "EUR")
+    Money.stub(:rates, nil) do
+      assert_raises(Money::ConversionRatesNotSet) do
+        Money.new(1, "EUR")
+      end
     end
-  end
-
-  def test_conversion_rates_set
-    assert_equal("EUR", Money.base_currency)
-    assert_equal(1.11, Money.rates["USD"])
-    assert_equal(0.0047, Money.rates["Bitcoin"])
   end
 
   def test_amount
