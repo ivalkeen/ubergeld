@@ -1,11 +1,21 @@
 require "test_helper"
 
 class MoneyTest < Minitest::Test
-  Money.conversion_rates(
-    "EUR",
-    "USD" => 1.11,
-    "Bitcoin" => 0.0047,
-  )
+  def setup
+    Money.conversion_rates(
+      "EUR",
+      "USD" => 1.11,
+      "Bitcoin" => 0.0047,
+    )
+  end
+
+  def test_fails_if_no_conversion_rates
+    Money.conversion_rates(nil)
+
+    assert_raises(Money::ConversionRatesNotSet) do
+      Money.new(1, "EUR")
+    end
+  end
 
   def test_conversion_rates_set
     assert_equal("EUR", Money.base_currency)
@@ -29,6 +39,12 @@ class MoneyTest < Minitest::Test
     assert_equal("USD", money.currency)
   end
 
+  def test_currency_fails_if_unsuppored
+    assert_raises(Money::InvalidCurrency) do
+      Money.new(1, "Aurum")
+    end
+  end
+
   def test_inspect
     money = Money.new(50, "EUR")
     assert_equal("50.00 EUR", money.inspect)
@@ -47,6 +63,13 @@ class MoneyTest < Minitest::Test
     money_in_dollars = Money.new(55.5, "USD")
     money = money_in_dollars.convert_to("EUR")
     assert_equal("50.00 EUR", money.inspect)
+  end
+
+  def test_convert_to_fails_if_unsupported
+    money = Money.new(10, "USD")
+    assert_raises(Money::InvalidCurrency) do
+      money.convert_to("Aurum")
+    end
   end
 
   def test_convert_between_non_base_currencies
@@ -87,10 +110,6 @@ class MoneyTest < Minitest::Test
     money = Money.new(40, "USD")
     result = money / 4.5
     assert_equal("8.89 USD", result.inspect)
-
-    money = Money.new(100, "USD")
-    result = money / 3
-    assert_equal("33.33 USD", result.inspect)
   end
 
   def test_division_by_zero_raises_error
