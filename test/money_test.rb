@@ -51,6 +51,34 @@ class MoneyTest < Minitest::Test
     assert_equal("20.50 USD", money.inspect)
   end
 
+  def test_inspect_amount
+    money = Money.new(50, "EUR")
+    assert_equal("50", money.amount.inspect)
+
+    money = Money.new(50.1, "EUR")
+    assert_equal("50.1", money.amount.inspect)
+
+    money = Money.new(50.55, "EUR")
+    assert_equal("50.55", money.amount.inspect)
+
+    money = Money.new(50.555, "EUR")
+    assert_equal("50.56", money.amount.inspect)
+  end
+
+  def test_to_s_amount
+    money = Money.new(50, "EUR")
+    assert_equal("50", money.amount.to_s)
+
+    money = Money.new(50.1, "EUR")
+    assert_equal("50.1", money.amount.to_s)
+
+    money = Money.new(50.55, "EUR")
+    assert_equal("50.55", money.amount.to_s)
+
+    money = Money.new(50.555, "EUR")
+    assert_equal("50.56", money.amount.to_s)
+  end
+
   def test_convert_from_base_currency
     money = Money.new(50, "EUR")
     money_in_dollars = money.convert_to("USD")

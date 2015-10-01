@@ -4,6 +4,7 @@ require "bigdecimal/util"
 require "money/version"
 require "money/errors"
 require "money/conversion_rates"
+require "money/inspectable"
 
 class Money
   attr_reader :amount, :currency
@@ -21,6 +22,7 @@ class Money
     fail InvalidCurrency unless Money.rates.valid_currency?(currency)
 
     @amount = amount.to_d
+    @amount.extend(Inspectable)
     @currency = currency.to_s
   end
 
