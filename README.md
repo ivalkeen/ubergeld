@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ivalkeen/ubergeld.svg)](https://travis-ci.org/ivalkeen/ubergeld)
+
 # Ubergeld
 
 A Ruby gem to perform currency conversion and arithmetics with different currencies
